@@ -1,0 +1,78 @@
+version: '2'
+services:
+  h2o:
+    build: ./lierc-h2o
+    ports:
+      - "80:80"
+      - "443:443"
+
+  liercd:
+    build: ./liercd
+    env_file: .env
+    ports:
+      - "5005:5005"
+    links:
+      - nsqd
+
+  lierc-logger:
+    build: ./lierc-logger
+    env_file: .env
+    links:
+      - postgres:database
+      - nsqd
+
+  lierc-identd:
+    build: ./lierc-identd
+    env_file: .env
+    depends_on:
+      - liercd
+    ports:
+      - "113:113"
+
+  lierc-api:
+    build: ./lierc-api
+    env_file: .env
+    ports:
+      - "5004:5004"
+    links:
+      - postgres:database
+      - liercd
+
+  lierc-api-stream:
+    build: ./lierc-api
+    command: [carton, exec, plackup, --server, Twiggy, -Ilib, --listen, ":5003", bin/events.psgi]
+    ports:
+      - "5003:5003"
+    env_file: .env
+    links:
+      - postgres:database
+      - liercd
+      - nsqd
+
+  postgres:
+    env_file: .env
+    build: ./lierc-postgres
+
+  nsqlookupd:
+    image: nsqio/nsq
+    ports:
+      - "4160:4160"
+      - "4161:4161"
+    command: /nsqlookupd
+
+  nsqd:
+    image: nsqio/nsq
+    ports:
+      - "4150"
+      - "4151"
+    links:
+      - nsqlookupd:nsqlookupd
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
+
+  nsqadmin:
+    image: nsqio/nsq
+    ports:
+      - "4171:4171"
+    links:
+      - nsqlookupd:nsqlookupd
+    command: /nsqadmin --lookupd-http-address=nsqlookupd:4161

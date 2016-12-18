@@ -1,0 +1,15 @@
+[submodule "liercd"]
+	path = liercd
+	url = git@github.com:lierc/liercd.git
+[submodule "lierc-logger"]
+	path = lierc-logger
+	url = git@github.com:lierc/lierc-logger.git
+[submodule "lierc-identd"]
+	path = lierc-identd
+	url = git@github.com:lierc/lierc-identd.git
+[submodule "lierc-api"]
+	path = lierc-api
+	url = git@github.com:lierc/lierc-api.git
+[submodule "lierc-h2o/lierc-basicui"]
+	path = lierc-h2o/lierc-basicui
+	url = git@github.com:lierc/lierc-basicui.git
