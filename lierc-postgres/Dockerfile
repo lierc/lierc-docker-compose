@@ -1,2 +1,2 @@
 FROM postgres
-COPY lierc.sql /docker-entrypoint-initdb.d/
+COPY lierc.sql /docker-entrypoint-initdb.d/lierc.sql
