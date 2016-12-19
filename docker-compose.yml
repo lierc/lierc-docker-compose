@@ -27,7 +27,7 @@ services:
   lierc-identd:
     build: ./lierc-identd
     env_file: .env
-    depends_on:
+    links:
       - liercd
     ports:
       - "113:113"
