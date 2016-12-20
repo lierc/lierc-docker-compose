@@ -8,6 +8,4 @@ RUN cd /tmp/h2o && git submodule init && git submodule update && cmake -DWITH_BU
 COPY h2o.conf /etc/h2o/h2o.conf
 COPY ssl/ /etc/h2o/ssl
 RUN apt-get -y install node-uglify
-COPY lierc-basicui /opt/lierc-basicui
-RUN cd /opt/lierc-basicui && make
 CMD h2o -c /etc/h2o/h2o.conf

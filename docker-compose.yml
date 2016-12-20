@@ -2,6 +2,8 @@ version: '2'
 services:
   h2o:
     build: ./lierc-h2o
+    volumes:
+      - ./lierc-basicui:/opt/lierc-basicui/:ro
     ports:
       - "80:80"
       - "443:443"
