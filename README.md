@@ -7,5 +7,5 @@ Run:
 
 ```
 docker-compose build
-docker-compose run
+docker-compose up -d
 ```
