@@ -1,8 +1,6 @@
 Setup
 =====
 
-Copy SSL certificates into `lierc-h2o/ssl/{fullchain,privkey}.pem`.
-
 Run:
 
 ```
