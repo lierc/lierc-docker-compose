@@ -13,3 +13,6 @@
 [submodule "lierc-basicui"]
 	path = lierc-basicui
 	url = git@github.com:lierc/lierc-basicui.git
+[submodule "lierc"]
+	path = lierc
+	url = git@github.com:lierc/lierc.git

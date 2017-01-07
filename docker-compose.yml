@@ -12,7 +12,8 @@ services:
       - lierc-api-stream
 
   liercd:
-    build: ./liercd
+    build: ./lierc
+    command: [ liercd ]
     env_file: .env
     ports:
       - "5005:5005"
@@ -20,14 +21,16 @@ services:
       - nsqd
 
   lierc-logger:
-    build: ./lierc-logger
+    build: ./lierc
+    command: [ lierc-logger ]
     env_file: .env
     links:
       - postgres:database
       - nsqd
 
   lierc-identd:
-    build: ./lierc-identd
+    build: ./lierc
+    command: [ lierc-identd ]
     env_file: .env
     links:
       - liercd
