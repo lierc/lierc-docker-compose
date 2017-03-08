@@ -52,3 +52,11 @@ create table seen (
   message_id int not null,
   primary key ("user", connection, channel)
 );
+
+create table token (
+  id varchar(24) not null,
+  "user" varchar(24) not null,
+  created timestamp not null,
+  primary key (id),
+  index ("user", id)
+);
