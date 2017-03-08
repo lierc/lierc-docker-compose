@@ -57,6 +57,7 @@ create table token (
   id varchar(24) not null,
   "user" varchar(24) not null,
   created timestamp not null,
-  primary key (id),
-  index ("user", id)
+  primary key (id)
 );
+
+create index on token ("user", id);
