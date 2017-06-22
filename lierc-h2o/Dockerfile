@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:jessie
 EXPOSE 80 443
 WORKDIR /opt/h2o
 RUN apt-get update
