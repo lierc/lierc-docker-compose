@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   h2o:
     build: ./lierc-h2o
@@ -21,6 +21,9 @@ services:
       - "5005:5005"
     links:
       - nsqd
+    depends_on:
+      nsqd:
+        condition: service_started
 
   lierc-logger:
     build: ./lierc
@@ -29,6 +32,11 @@ services:
     links:
       - postgres:database
       - nsqd
+    depends_on:
+      nsqd:
+        condition: service_started
+      postgres:
+        condition:  service_started
 
   lierc-identd:
     build: ./lierc
@@ -47,6 +55,10 @@ services:
     links:
       - postgres:database
       - liercd
+    depends_on:
+      postgres:
+        condition:  service_started
+
 
   lierc-api-stream:
     build: ./lierc-api
@@ -58,6 +70,11 @@ services:
       - postgres:database
       - liercd
       - nsqd
+    depends_on:
+      nsqd:
+        condition: service_started
+      postgres:
+        condition:  service_started
 
   postgres:
     env_file: .env
