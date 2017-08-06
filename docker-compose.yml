@@ -47,6 +47,17 @@ services:
     ports:
       - "113:113"
 
+  lierc-notify:
+    build: ./lierc
+    command: [ lierc-notify ]
+    env_file: .env
+    links:
+      - postgres
+      - lierc-api
+    depends_on:
+      postgres:
+        condition:  service_healthy
+
   lierc-api:
     build: ./lierc-api
     env_file: .env
