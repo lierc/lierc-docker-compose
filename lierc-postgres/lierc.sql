@@ -3,7 +3,6 @@ create table "user" (
   email    varchar(256) not null,
   password varchar(256) not null,
   username varchar(256) not null,
-  last_id  int not null default 0,
   last_login timestamp not null default NOW(),
   unique (email),
   unique (username),
@@ -41,7 +40,7 @@ create index on log (time);
 create table pref (
   "user"  varchar(24) not null,
   name    varchar(128) not null,
-  value   bytea not null,
+  value   varchar(512) not null,
   primary key ("user", name)
 );
 
@@ -61,3 +60,18 @@ create table token (
 );
 
 create index on token ("user", id);
+
+create table private (
+  connection varchar(24) not null,
+  nick varchar(32) not null,
+  time timestamp not null,
+  primary key (connection, nick)
+);
+
+create table web_push (
+  endpoint varchar(255) not null,
+  key varchar(255) not null,
+  auth varchar(255) not null,
+  "user" varchar(24) not null,
+  primary key ("user", endpoint)
+);
