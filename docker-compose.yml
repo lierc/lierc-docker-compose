@@ -11,6 +11,11 @@ services:
       - lierc-api
       - lierc-api-stream
 
+  basicui:
+    build: ./lierc-basicui
+    volumes:
+      - ./lierc-basicui:/opt/lierc-basicui/:rw
+
   liercd:
     build: ./lierc
     command: [ liercd ]
