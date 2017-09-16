@@ -25,6 +25,7 @@ create table log (
   connection  varchar(24) not null,
   channel     varchar(32) not null,
   privmsg     bool not null default false,
+  command     varchar(16),
   highlight   bool not null default false,
   time        timestamp not null,
   message     jsonb not null,
@@ -49,6 +50,7 @@ create table seen (
   connection varchar(24) not null,
   channel    varchar(32) not null,
   message_id int not null,
+  updated timestamp not null default now(),
   primary key ("user", connection, channel)
 );
 
@@ -81,4 +83,11 @@ create table ignore (
   channel varchar(32) not null,
   "from" varchar(128) not null,
   primary key (connection, channel, "from")
+);
+
+create table apn (
+  device_id varchar(255) not null,
+  "user" varchar(24) not null,
+  updated timestamp not null default now(),
+  primary key ("user", device_id)
 );

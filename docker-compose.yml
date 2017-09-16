@@ -78,7 +78,7 @@ services:
 
   lierc-api-stream:
     build: ./lierc-api
-    command: [carton, exec, plackup, --server, Twiggy, -Ilib, --listen, ":5003", bin/events.psgi]
+    command: [carton, exec, plackup, --server, Twiggy, -Ilib, --listen, ":5003", bin/stream.psgi]
     ports:
       - "5003:5003"
     env_file: .env
