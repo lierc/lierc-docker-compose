@@ -24,7 +24,6 @@ create table log (
   id          serial,
   connection  varchar(24) not null,
   channel     varchar(32) not null,
-  privmsg     bool not null default false,
   command     varchar(16),
   highlight   bool not null default false,
   time        timestamp not null,
@@ -33,9 +32,12 @@ create table log (
   primary key (id)
 );
 
-create index on log (connection, channel, highlight DESC);
 create index on log (connection, channel, id DESC);
-create index on log (connection, channel, privmsg, id DESC);
+create index log_message_text on log USING gin ( to_tsvector( 'english', message->'Params'->1 ));
+create index log_sender on log USING gin ((message->'Prefix'->'Name'));
+create index on log (time);
+
+
 create index on log (time);
 
 create table pref (
@@ -90,4 +92,12 @@ create table apn (
   "user" varchar(24) not null,
   updated timestamp not null default now(),
   primary key ("user", device_id)
+);
+
+create table image (
+  "user" varchar(24) not null,
+  url varchar(255) not null,
+  delete_hash varchar(32) not null,
+  created timestamp not null default NOW(),
+  primary key ("user", url)
 );
