@@ -36,7 +36,7 @@ create table log (
 create index on log (connection, channel, id DESC);
 create index log_message_text on log USING gin ( to_tsvector( 'english', message->'Params'->1 ));
 create index log_sender on log USING gin ((message->'Prefix'->'Name'));
-create index log_user_highlight ("user", highlight, id DESC);
+create index log_user_highlight on log ("user", highlight, id DESC);
 create index on log (time);
 
 create table pref (
