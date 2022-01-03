@@ -1,15 +1,17 @@
 version: '2.1'
 services:
-  h2o:
-    build: ./lierc-h2o
+  nginx:
+    image: nginx
     volumes:
+      - ./lierc-nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./lierc-basicui:/opt/lierc-basicui/:ro
     ports:
-      - "80:80"
-      - "443:443"
-    links:
-      - lierc-api
-      - lierc-api-stream
+      - "8080:80"
+    depends_on:
+      lierc-api:
+        condition: service_started
+      lierc-api-stream:
+        condition: service_started
 
   basicui:
     build: ./lierc-basicui
