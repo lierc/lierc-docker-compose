@@ -1,130 +1,103 @@
-version: '2.1'
 services:
   nginx:
-    image: nginx
+    image: nginx:1.24
     volumes:
       - ./lierc-nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./lierc-basicui:/opt/lierc-basicui/:ro
+      - ./lierc-minimal-ui:/var/www/lierc-minimal-ui:ro
     ports:
-      - "8080:80"
+      - "${HTTP_PORT:-8080}:80"
     depends_on:
-      lierc-api:
-        condition: service_started
-      lierc-api-stream:
-        condition: service_started
-
-  basicui:
-    build: ./lierc-basicui
-    volumes:
-      - ./lierc-basicui:/opt/lierc-basicui/:rw
+      - lierc-api
+      - lierc-api-stream
 
   liercd:
-    build: ./lierc
-    command: [ liercd ]
+    image: ghcr.io/lierc/lierc:latest
+    command: [liercd]
     env_file: .env
-    environment:
-      LIERC_DEBUG: 2
-    ports:
-      - "5005:5005"
-    links:
-      - nsqd
     depends_on:
-      nsqd:
-        condition: service_started
+      - nsqd
 
   lierc-logger:
-    build: ./lierc
-    command: [ lierc-logger ]
+    image: ghcr.io/lierc/lierc:latest
+    command: [lierc-logger]
     env_file: .env
-    links:
-      - postgres:database
-      - nsqd
     depends_on:
       nsqd:
         condition: service_started
       postgres:
-        condition:  service_healthy
-
-  lierc-identd:
-    build: ./lierc
-    command: [ lierc-identd ]
-    env_file: .env
-    links:
-      - liercd
-    ports:
-      - "113:113"
+        condition: service_healthy
 
   lierc-notify:
-    build: ./lierc
-    command: [ lierc-notify ]
+    image: ghcr.io/lierc/lierc:latest
+    command: [lierc-notify]
     env_file: .env
-    links:
-      - postgres
-      - lierc-api
-    depends_on:
-      postgres:
-        condition:  service_healthy
-
-  lierc-api:
-    build: ./lierc-api
-    env_file: .env
-    ports:
-      - "5004:5004"
-    links:
-      - postgres:database
-      - liercd
-    depends_on:
-      postgres:
-        condition:  service_healthy
-
-
-  lierc-api-stream:
-    build: ./lierc-api
-    command: [carton, exec, plackup, --server, Twiggy, -Ilib, --listen, ":5003", bin/stream.psgi]
-    ports:
-      - "5003:5003"
-    env_file: .env
-    links:
-      - postgres:database
-      - liercd
-      - nsqd
     depends_on:
       nsqd:
         condition: service_started
       postgres:
-        condition:  service_healthy
+        condition: service_healthy
+
+  lierc-identd:
+    image: ghcr.io/lierc/lierc:latest
+    command: [lierc-identd]
+    env_file: .env
+    ports:
+      - "113:113"
+    depends_on:
+      - liercd
+
+  lierc-api:
+    image: ghcr.io/lierc/lierc-api:latest
+    env_file: .env
+    depends_on:
+      liercd:
+        condition: service_started
+      mailpit:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  lierc-api-stream:
+    image: ghcr.io/lierc/lierc-api-go:latest
+    command: [stream]
+    env_file: .env
+    depends_on:
+      liercd:
+        condition: service_started
+      nsqd:
+        condition: service_started
+      postgres:
+        condition: service_healthy
 
   postgres:
+    build: ./lierc-postgres
     env_file: .env
     ports:
       - "5432:5432"
-    build: ./lierc-postgres
+    volumes:
+      - postgres:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U", "lierc", "-d", "lierc"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
-
-  nsqlookupd:
-    image: nsqio/nsq
-    ports:
-      - "4160:4160"
-      - "4161:4161"
-    command: /nsqlookupd
+      test: ["CMD", "pg_isready", "-U", "lierc", "-d", "lierc"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   nsqd:
-    image: nsqio/nsq
-    ports:
-      - "4150"
-      - "4151"
-    links:
-      - nsqlookupd:nsqlookupd
-    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
+    image: nsqio/nsq:v1.3.0
+    command: /nsqd
 
   nsqadmin:
-    image: nsqio/nsq
+    image: nsqio/nsq:v1.3.0
+    command: /nsqadmin --nsqd-http-address=nsqd:4151
     ports:
       - "4171:4171"
-    links:
-      - nsqlookupd:nsqlookupd
-    command: /nsqadmin --lookupd-http-address=nsqlookupd:4161
+    depends_on:
+      - nsqd
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "8025:8025"
+
+volumes:
+  postgres:

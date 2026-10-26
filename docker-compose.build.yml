@@ -1,0 +1,19 @@
+# Build lierc images from local checkouts instead of pulling them:
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml up --build
+x-lierc-build: &lierc-build
+  build: ${LIERC_SRC:-../lierc}
+  image: lierc-dev/lierc
+
+services:
+  liercd: *lierc-build
+  lierc-logger: *lierc-build
+  lierc-notify: *lierc-build
+  lierc-identd: *lierc-build
+  lierc-api:
+    build: ${LIERC_API_SRC:-../lierc-api}
+    image: lierc-dev/lierc-api
+  lierc-api-stream:
+    build:
+      context: ${LIERC_API_SRC:-../lierc-api}
+      dockerfile: go.Dockerfile
+    image: lierc-dev/lierc-api-go

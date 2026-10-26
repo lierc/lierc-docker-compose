@@ -1,18 +1,3 @@
-[submodule "liercd"]
-	path = liercd
-	url = git@github.com:lierc/liercd.git
-[submodule "lierc-logger"]
-	path = lierc-logger
-	url = git@github.com:lierc/lierc-logger.git
-[submodule "lierc-identd"]
-	path = lierc-identd
-	url = git@github.com:lierc/lierc-identd.git
-[submodule "lierc-api"]
-	path = lierc-api
-	url = git@github.com:lierc/lierc-api.git
-[submodule "lierc-basicui"]
-	path = lierc-basicui
-	url = git@github.com:lierc/lierc-basicui.git
-[submodule "lierc"]
-	path = lierc
-	url = git@github.com:lierc/lierc.git
+[submodule "lierc-minimal-ui"]
+	path = lierc-minimal-ui
+	url = https://github.com/lierc/lierc-minimal-ui.git
