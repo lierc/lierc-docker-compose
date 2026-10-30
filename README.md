@@ -4,7 +4,7 @@ lierc development environment
 Runs the whole lierc stack locally: liercd, the logger, notifier and
 identd from [lierc](https://github.com/lierc/lierc), the API and Go
 stream server from [lierc-api](https://github.com/lierc/lierc-api),
-Postgres, nsqd and nginx serving
+Postgres, nsqd, the ergo IRC server and nginx serving
 [lierc-minimal-ui](https://github.com/lierc/lierc-minimal-ui).
 
 This is for development, not production. The production setup lives in
@@ -27,6 +27,7 @@ Then open http://localhost:8080/ and register an account. Set
 | http://localhost:8025  | mailpit, which catches verification and notification email |
 | http://localhost:4171  | nsqadmin                                       |
 | localhost:5432         | Postgres (user `lierc`, password `changeme`)   |
+| localhost:6667         | ergo, the IRC server new accounts are connected to |
 
 The schema in `lierc-postgres/lierc.sql` is loaded only when the
 `postgres` volume is first created. Run `docker compose down -v` to

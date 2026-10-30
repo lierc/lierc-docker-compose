@@ -16,6 +16,7 @@ services:
     env_file: .env
     depends_on:
       - nsqd
+      - ergo
 
   lierc-logger:
     image: ghcr.io/lierc/lierc:latest
@@ -99,5 +100,17 @@ services:
     ports:
       - "8025:8025"
 
+  # The IRC server new signups are connected to (DEFAULT_NETWORK_* in
+  # .env). Its config, accounts and certs live in the ergo volume.
+  ergo:
+    image: ghcr.io/ergochat/ergo:v2.19.1
+    environment:
+      ERGO__NETWORK__NAME: relaychat
+    ports:
+      - "6667:6667"
+    volumes:
+      - ergo:/ircd
+
 volumes:
   postgres:
+  ergo:
