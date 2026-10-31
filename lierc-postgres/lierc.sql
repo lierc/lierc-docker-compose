@@ -58,15 +58,6 @@ create table seen (
   primary key ("user", connection, channel)
 );
 
-create table token (
-  id varchar(24) not null,
-  "user" varchar(24) not null,
-  created timestamp not null,
-  primary key (id)
-);
-
-create index on token ("user", id);
-
 create table private (
   connection varchar(24) not null,
   nick varchar(32) not null,
@@ -80,26 +71,4 @@ create table web_push (
   auth varchar(255) not null,
   "user" varchar(24) not null,
   primary key ("user", endpoint)
-);
-
-create table ignore (
-  connection varchar(24) not null,
-  channel varchar(32) not null,
-  "from" varchar(128) not null,
-  primary key (connection, channel, "from")
-);
-
-create table apn (
-  device_id varchar(255) not null,
-  "user" varchar(24) not null,
-  updated timestamp not null default now(),
-  primary key ("user", device_id)
-);
-
-create table image (
-  "user" varchar(24) not null,
-  url varchar(255) not null,
-  delete_hash varchar(32) not null,
-  created timestamp not null default NOW(),
-  primary key ("user", url)
 );
