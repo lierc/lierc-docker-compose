@@ -62,6 +62,10 @@ services:
     image: ghcr.io/lierc/lierc-api-go:latest
     command: [stream]
     env_file: .env
+    environment:
+      # /stats, for the notifier on the compose network; never published
+      # and not proxied by nginx.
+      ADMIN_LISTEN: ":5009"
     depends_on:
       liercd:
         condition: service_started
