@@ -28,16 +28,6 @@ services:
       postgres:
         condition: service_healthy
 
-  lierc-notify:
-    image: ghcr.io/lierc/lierc:latest
-    command: [lierc-notify]
-    env_file: .env
-    depends_on:
-      nsqd:
-        condition: service_started
-      postgres:
-        condition: service_healthy
-
   lierc-identd:
     image: ghcr.io/lierc/lierc:latest
     command: [lierc-identd]
@@ -63,7 +53,7 @@ services:
     command: [stream]
     env_file: .env
     environment:
-      # /stats, for the notifier on the compose network; never published
+      # /stats, for lierc-logger's notifier on the compose network; never published
       # and not proxied by nginx.
       ADMIN_LISTEN: ":5009"
     depends_on:

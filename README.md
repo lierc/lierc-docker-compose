@@ -1,8 +1,9 @@
 lierc development environment
 =============================
 
-Runs the whole lierc stack locally: liercd, the logger, notifier and
-identd from [lierc](https://github.com/lierc/lierc), the API and Go
+Runs the whole lierc stack locally: liercd, the logger (which also
+sends notifications) and identd from
+[lierc](https://github.com/lierc/lierc), the API and Go
 stream server from [lierc-api](https://github.com/lierc/lierc-api),
 Postgres, nsqd, the ergo IRC server and nginx serving
 [lierc-minimal-ui](https://github.com/lierc/lierc-minimal-ui).
