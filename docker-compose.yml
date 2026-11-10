@@ -56,6 +56,8 @@ services:
       # /stats, for lierc-logger's notifier on the compose network; never published
       # and not proxied by nginx.
       ADMIN_LISTEN: ":5009"
+      # requests the Go server doesn't handle itself go to the Perl API
+      PERL_API: http://lierc-api:5004
     depends_on:
       liercd:
         condition: service_started
