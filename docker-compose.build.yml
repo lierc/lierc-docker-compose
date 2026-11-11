@@ -8,9 +8,6 @@ services:
   liercd: *lierc-build
   lierc-logger: *lierc-build
   lierc-identd: *lierc-build
-  lierc-api:
-    build: ${LIERC_API_SRC:-../lierc-api}
-    image: lierc-dev/lierc-api
   lierc-api-stream:
     build:
       context: ${LIERC_API_SRC:-../lierc-api}
