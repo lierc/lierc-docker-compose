@@ -7,7 +7,7 @@ services:
     ports:
       - "${HTTP_PORT:-8080}:80"
     depends_on:
-      - lierc-api-stream
+      - lierc-api
 
   liercd:
     image: ghcr.io/lierc/lierc:latest
@@ -36,8 +36,8 @@ services:
     depends_on:
       - liercd
 
-  lierc-api-stream:
-    image: ghcr.io/lierc/lierc-api-go:latest
+  lierc-api:
+    image: ghcr.io/lierc/lierc-api:latest
     command: [stream]
     env_file: .env
     environment:

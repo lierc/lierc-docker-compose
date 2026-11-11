@@ -8,8 +8,8 @@ services:
   liercd: *lierc-build
   lierc-logger: *lierc-build
   lierc-identd: *lierc-build
-  lierc-api-stream:
+  lierc-api:
     build:
       context: ${LIERC_API_SRC:-../lierc-api}
       dockerfile: go.Dockerfile
-    image: lierc-dev/lierc-api-go
+    image: lierc-dev/lierc-api
