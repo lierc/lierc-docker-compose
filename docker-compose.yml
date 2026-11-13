@@ -38,7 +38,6 @@ services:
 
   lierc-api:
     image: ghcr.io/lierc/lierc-api:latest
-    command: [stream]
     env_file: .env
     environment:
       # /stats, for lierc-logger's notifier on the compose network; never published
