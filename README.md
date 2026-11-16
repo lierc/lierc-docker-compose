@@ -30,9 +30,12 @@ Then open http://localhost:8080/ and register an account. Set
 | localhost:5432         | Postgres (user `lierc`, password `changeme`)   |
 | localhost:6667         | ergo, the IRC server new accounts are connected to |
 
-The schema in `lierc-postgres/lierc.sql` is loaded only when the
-`postgres` volume is first created. Run `docker compose down -v` to
-start over with an empty database.
+lierc-api creates the schema when it starts, by applying its migrations
+(`internal/db/migrations` in lierc-api), and applies new ones on later
+starts. Run `docker compose down -v` to start over with an empty
+database. A volume from before lierc-api had migrations has the tables
+but no `schema_migrations`, and lierc-api stops on its first migration:
+run `docker compose down -v` once to replace it.
 
 Editing the UI
 --------------
