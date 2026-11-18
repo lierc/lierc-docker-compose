@@ -11,6 +11,8 @@ Postgres, nsqd, the ergo IRC server and nginx serving
 This is for development, not production. The production setup lives in
 relaychat-infra.
 
+Questions or ideas? Come talk in [#relaychat](https://relaychat.party/join/?network=relaychat&channel=relaychat).
+
 Setup
 -----
 
