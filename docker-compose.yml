@@ -17,9 +17,10 @@ services:
       - nsqd
       - ergo
 
+  # the logger (which also sends notifications) is in lierc-api's image
   lierc-logger:
-    image: ghcr.io/lierc/lierc:latest
-    command: [lierc-logger]
+    image: ghcr.io/lierc/lierc-api:latest
+    entrypoint: [/lierc-logger]
     env_file: .env
     depends_on:
       nsqd:

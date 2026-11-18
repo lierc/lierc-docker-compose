@@ -4,12 +4,15 @@ x-lierc-build: &lierc-build
   build: ${LIERC_SRC:-../lierc}
   image: lierc-dev/lierc
 
+x-lierc-api-build: &lierc-api-build
+  build:
+    context: ${LIERC_API_SRC:-../lierc-api}
+    dockerfile: go.Dockerfile
+  image: lierc-dev/lierc-api
+
 services:
   liercd: *lierc-build
-  lierc-logger: *lierc-build
   lierc-identd: *lierc-build
-  lierc-api:
-    build:
-      context: ${LIERC_API_SRC:-../lierc-api}
-      dockerfile: go.Dockerfile
-    image: lierc-dev/lierc-api
+  # the logger runs from the lierc-api image too
+  lierc-api: *lierc-api-build
+  lierc-logger: *lierc-api-build
