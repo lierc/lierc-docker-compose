@@ -6,7 +6,7 @@ sends notifications) and identd from
 [lierc](https://github.com/lierc/lierc), the API (Go, with
 the event stream) from [lierc-api](https://github.com/lierc/lierc-api),
 Postgres, nsqd, the ergo IRC server and nginx serving
-[lierc-minimal-ui](https://github.com/lierc/lierc-minimal-ui).
+[lierc-web](https://github.com/lierc/lierc-web).
 
 This is for development, not production. The production setup lives in
 relaychat-infra.
@@ -42,8 +42,9 @@ run `docker compose down -v` once to replace it.
 Editing the UI
 --------------
 
-`lierc-minimal-ui` is mounted into nginx, so changes show up on reload.
-There is no build step.
+`lierc-web` is mounted into nginx, so changes show up on reload (nginx
+sends `Cache-Control: no-cache`, so the browser checks each file). There
+is no build step; the release build in lierc-web is only for deploys.
 
 Building lierc or lierc-api from source
 ---------------------------------------
