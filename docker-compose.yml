@@ -17,10 +17,10 @@ services:
       - nsqd
       - ergo
 
-  # the logger (which also sends notifications) is in lierc-api's image
-  lierc-logger:
+  # lierc-ingest (logs chats, saves config changes, notifies) is in lierc-api's image
+  lierc-ingest:
     image: ghcr.io/lierc/lierc-api:latest
-    entrypoint: [/lierc-logger]
+    command: [ingest]
     env_file: .env
     depends_on:
       nsqd:
@@ -41,7 +41,7 @@ services:
     image: ghcr.io/lierc/lierc-api:latest
     env_file: .env
     environment:
-      # /stats, for lierc-logger's notifier on the compose network; never published
+      # /stats, for lierc-ingest's notifier on the compose network; never published
       # and not proxied by nginx.
       ADMIN_LISTEN: ":5009"
     depends_on:

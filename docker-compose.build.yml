@@ -13,6 +13,6 @@ x-lierc-api-build: &lierc-api-build
 services:
   liercd: *lierc-build
   lierc-identd: *lierc-build
-  # the logger runs from the lierc-api image too
+  # lierc-ingest runs from the lierc-api image too
   lierc-api: *lierc-api-build
-  lierc-logger: *lierc-api-build
+  lierc-ingest: *lierc-api-build
